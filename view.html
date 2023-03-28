@@ -5,133 +5,87 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Management System</title>
+    <title>View Product</title>
 
     <!-- boostarp Link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
 
 
-    <!-- google icons -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
 
-    <!-- JS file -->
-    <script src="./index.js" defer></script>
+    <!-- script -->
+    <script src="./view.js" async></script>
 
 </head>
 
-
-
 <body class="bg-dark">
 
+    <!-- breadcrumbs -->
+    <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-5 mb-0 ">
+        <ol class="breadcrumb ">
+            <li class="breadcrumb-item "><a href="/" class="text-light">Home</a></li>
+            <li class="breadcrumb-item active text-light" aria-current="page">product</li>
+        </ol>
+    </nav>
 
-    <header class="container d-flex justify-content-lg-between align-items-xl-center flex-xl-row flex-column">
-
-
-        <div>
-
-            <h2 class="py-4 text-light">Product Management System</h2>
-        </div>
-
-        <div class="d-flex  flex-sm-row flex-column align-items-sm-center align-items-start">
-
-
-            <div class="position-relative m-2">
-
-                <input type="text" id="filterByID" class="w-100 p-1 rounded" placeholder="Search Product By ID">
-                <button type="button" onClick="searchProductByID()" class="material-symbols-outlined btn  position-absolute end-0  border-start   btn-sm">search</button>
-
-            </div>
-
-            <select class="bg-secondary text-light rounded px-3 m-2" style="height:2rem" id="filterProducts">
-
-                <option selected disabled hidden class="p-5">Sort Products</option>
-                <option value="All Products" class="p-5">All Products</option>
-                <option value="productName" class="p-5">By Product Name</option>
-                <option value="productPrice" class="p-5">By Product Price</option>
-
-            </select>
-
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm text-nowrap m-2" data-toggle="modal"data-target="#createProduct">Create Product</button>
-
-        </div>
-
+    <div class="edit-modal">
 
         <!-- Modal -->
-        <div class="modal fade" id="createProduct" tabindex="-1" role="dialog" aria-labelledby="createProductLabel" aria-hidden="true">
-            
+        <div class="modal fade" id="editProduct" tabindex="-1" role="dialog" aria-labelledby="editProductLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
-                
                 <div class="modal-content">
-
                     <div class="modal-header">
-
-                        <h5 class="modal-title" id="createProductLabel">Create Product</h5>
+                        <h5 class="modal-title" id="editProductLabel">Edit Product</h5>
                         <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-
                     </div>
-
                     <div class="modal-body p-3">
-
-
-                        <form id="createProductForm">
-
+                        <form id="editProductForm">
                             <div class="form-group py-2">
                                 <label for="productName">Product Name</label>
                                 <input type="text" class="form-control" id="productName"
-                                    placeholder="Specs,ball,etc..." required>
+                                    placeholder="Specs,ball,etc...">
                             </div>
-
                             <div class="form-group py-2">
                                 <label for="productImage">Product Image</label>
-                                <input type="file" class="form-control" id="productImage" required>
+                                <input type="file" class="form-control" id="productImage">
                             </div>
-
                             <div class="form-group py-2">
                                 <label for="productPrice">Product Price</label>
-                                <input type="number" class="form-control" id="productPrice" placeholder="&#8377; 300" required>
+                                <input type="number" class="form-control" id="productPrice" placeholder="&#8377; 300">
                             </div>
 
                             <div class="form-group py-2">
                                 <label for="productDescription">Description</label>
-                                <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+                                <textarea class="form-control" id="productDescription" rows="3"></textarea>
                             </div>
+
 
                             <div class="modal-footer mt-4 ">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" id="createProductButton" class="btn btn-primary ">Create
+                                <button type="submit" id="editProductButton" class="btn btn-primary">Edit
                                     Product</button>
                             </div>
-
                         </form>
-
                     </div>
+
                 </div>
-
             </div>
-
         </div>
+    </div>
 
-    </header>
-
-
-    <!-- cards will be here -->
-    <section class="container" id="main-container">
-
-        <div class="row justify-content-md-start justify-content-center g-3 mt-3" id="productsCards">
+    <!-- card will be shown here -->
+    <div id="main-container">
 
 
-
-        </div>
-
-    </section>
+    </div>
 
 
-
+        
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -141,8 +95,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-
-
 </body>
 
 </html>
