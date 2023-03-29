@@ -166,7 +166,7 @@ function showProducts(elements = products) {
 
   const innerDiv = document.createElement("div");
   if (elements.length == 0) {
-    productCards.innerHTML = '<h1 class="text-secondary text-center">No Products available</h1>';
+    productCards.innerHTML = '<h1 class="text-secondary fw-bold fs-2 text-center">No Products available</h1>';
   }
 
   else {
