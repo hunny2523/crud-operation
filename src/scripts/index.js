@@ -300,22 +300,32 @@ filterProducts.addEventListener("click", (e) => {
 
 
 
-// search product by given product ID
-function searchProductByID() {
-  let id = filterIDInput.value;
-  if (id) {
-    let product = products.find((product) => product.ID == id);
+// Filter Products by given ID input
 
-    if (product) {
-      showProducts([product]);
-    }
-    else {
-      alert("not exsits");
-    }
-  }
-  else {
-    showProducts();
-  }
+// Define a debounce function to delay the execution of a function
+function debounce(func, delay) {
+  let timeout;
+  return function() {
+    
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      func();
+    }, delay);
+  };
 }
 
+// Define a function to handle the search
+function handleSearch() {
+  
+  // Filter the products array based on the search term
+  const filteredProducts = products.filter(product => {
+  //  check if product ID is starts with given input
+    return String(product.ID).startsWith(filterIDInput.value);
+  });
 
+  // Display the filtered products in the UI
+  showProducts(filteredProducts);
+}
+
+// Use the debounce function to delay the execution of the search function for product ID
+filterIDInput.addEventListener('input', debounce(handleSearch, 500));
