@@ -13,10 +13,10 @@
 
 
     <!-- css -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <!-- script -->
-    <script src="./view.js" async></script>
+    <script src="../scripts/view.js" async></script>
 
 </head>
 
@@ -39,7 +39,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editProductLabel">Edit Product</h5>
-                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close p-1" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -48,20 +48,20 @@
                             <div class="form-group py-2">
                                 <label for="productName">Product Name</label>
                                 <input type="text" class="form-control" id="productName"
-                                    placeholder="Specs,ball,etc...">
+                                    placeholder="Specs,ball,etc..." required>
                             </div>
                             <div class="form-group py-2">
                                 <label for="productImage">Product Image</label>
-                                <input type="file" class="form-control" id="productImage">
+                                <input type="file" class="form-control" id="productImage" required>
                             </div>
                             <div class="form-group py-2">
                                 <label for="productPrice">Product Price</label>
-                                <input type="number" class="form-control" id="productPrice" placeholder="&#8377; 300">
+                                <input type="number" class="form-control" id="productPrice" placeholder="&#8377; 300" required>
                             </div>
 
                             <div class="form-group py-2">
                                 <label for="productDescription">Description</label>
-                                <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                                <textarea class="form-control" id="productDescription" rows="3" required></textarea>
                             </div>
 
 

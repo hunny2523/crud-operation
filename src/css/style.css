@@ -3,6 +3,9 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+
+/* set breadcrumbs color to white */
 .breadcrumb-item+.breadcrumb-item::before {
    
     color: white;

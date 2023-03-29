@@ -33,32 +33,84 @@ const filterIDInput = document.getElementById("filterByID");
 
 
 
+
+// Reset custom validity on input
+productNameInput.addEventListener('input', function (event) {
+  productNameInput.setCustomValidity('');
+});
+
+productDescriptionInput.addEventListener('input', function (event) {
+  productDescriptionInput.setCustomValidity('');
+});
+
+productImageInput.addEventListener('input', function (event) {
+  productImageInput.setCustomValidity('');
+});
+
+productPriceInput.addEventListener('input', function (event) {
+  productPriceInput.setCustomValidity('');
+});
+
+
+
+
 // form validations
 function validateForm() {
 
-  let validateValue = true;
-  let alertMsg = "";
+  productImageInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    const fileSize = file.size / 1000; // convert to KB
 
-  if (!productNameInput.value) {
-    alertMsg += "Name is Required \n";
-    validateValue = false;
-  } 
-  else if (!productImageInput.files[0]) {
-    alertMsg += "Please Upload Image\n";
-    validateValue = false;
-  } 
-  else if (productPriceInput.value < 0 || !productPriceInput.value) {
-    alertMsg += "Price must not be Zero or less than Zero\n";
-    validateValue = false;
+    if (fileSize > 200) {
+      productImageInput.setCustomValidity('Image size must be less than 200 KB');
+    }
+    else {
+      productImageInput.setCustomValidity('');
+    }
+  });
+
+
+
+  if (form.checkValidity() === false) {
+
+    // If form is invalid, display error messages for each invalid field
+    const fields = form.querySelectorAll(':invalid');
+
+    fields.forEach(function (field) {
+      // Use setCustomValidity to display custom error messages
+      if (field.id === 'productName') {
+        console.log(field.values);
+        field.setCustomValidity('Please enter a product name');
+      }
+      else if (field.id === 'productDescription') {
+        field.setCustomValidity('Please enter a product description');
+      }
+      else if (field.id === 'productImage') {
+        if (field.files[0] && field.files[0].size > 200000) {
+          productImageInput.setCustomValidity('Image size must be less than 200 KB');
+        }
+        else {
+          field.setCustomValidity('Please Upload Product Image');
+        }
+      }
+      else if (field.id === 'productPrice') {
+        if (isNaN(field.value)) {
+          field.setCustomValidity('Price must be a number');
+        }
+        else {
+          field.setCustomValidity('');
+        }
+      }
+
+    });
+
+    return false;
+
+  } else {
+    // If form is valid, submit the form
+    return true;
   }
-   else if (!productDescriptionInput.value) {
-    alertMsg += "Description is required\n";
-    validateValue = false;
-  }
 
-  if (!validateValue) alert(alertMsg);
-
-  return validateValue;
 
 }
 
@@ -69,19 +121,23 @@ function makeCard(ID, name, image, description, price) {
 
   let card = document.createElement("div");
 
-  card.classList = "card m-3 p-0";
+  card.classList = "card m-3 p-0 ";
   card.setAttribute("style", "width: 16rem");
   card.setAttribute("data-id", ID);
-  
-  let html = `<div class="card-header mx-auto rounded " style="height:10rem;width:100% " ><img class=\"mx-auto \" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="150px"></div>
+
+  let html = `<div class="card-header d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
+  <img class=\"mx-auto \" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="150px">
+  </div>
     <div class=\"card-body\">
       <p class=\"card-title\" id="card-ID">ID: ${ID}</p>
       <h5 class=\"card-title\" id="card-name">${name}</h5>
-      <p class=\"card-text\" id="card-description">${description}</p>
-      <p class=\"card-text\" id="card-price"> &#8377; ${price}</p>
+      <p class=\"card-text text-truncate\" id="card-description">${description}</p>
+      <p>
+      <span>&#8377;</span><span class=\"card-text\" id="card-price">  ${price}</span>
+      </p>
       <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
       <button class="btn btn-primary btn-sm">
-        <a href="./view.html?productID=${ID}" class="text-light text-decoration-none">VIEW</a>
+        <a href="./src/pages/view.html?productID=${ID}" class="text-light text-decoration-none">VIEW</a>
       </button>
     </div>`
 
@@ -106,10 +162,10 @@ function closeModal() {
 
 // when product is created by form , add product
 CreateProductbtn.addEventListener("click", async function (event) {
- 
-  if(validateForm()){
+  event.preventDefault();
 
-    event.preventDefault();
+  if (validateForm()) {
+
 
     const name = productNameInput.value;
     const description = productDescriptionInput.value;
@@ -117,15 +173,15 @@ CreateProductbtn.addEventListener("click", async function (event) {
     let image = productImageInput.files[0];
 
     image = await getBlob(image);
-  
+
     addCard(name, image, description, price);
     closeModal();
 
   }
- 
+
 });
 
-
+// convert image to base64 bit
 async function getBlob(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -138,7 +194,7 @@ async function getBlob(file) {
 }
 
 
-
+// generate new card
 function addCard(...args) {
 
   const newCard = {
@@ -157,22 +213,23 @@ function addCard(...args) {
 
 }
 
+
 // save products to localstorage
 function saveProduct() {
   localStorage.setItem("products", JSON.stringify(products));
 }
 
 
+
 // show products on screen from products array
 function showProducts(elements = products) {
 
   const innerDiv = document.createElement("div");
-
-  if(elements.length==0){
+  if (elements.length == 0) {
     productCards.innerHTML = '<h1 class="text-secondary text-center">No Products available</h1>';
   }
 
-  else{
+  else {
     for (i in elements) {
       innerDiv.appendChild(makeCard(elements[i].ID, elements[i].name, elements[i].image, elements[i].description, elements[i].price));
     }
@@ -184,10 +241,13 @@ function showProducts(elements = products) {
 showProducts();
 
 
+
 // generate random product ID
 function generateProductID() {
   return Math.floor(Math.random() * 1000);
 }
+
+
 
 // delete product
 function deleteProduct(temp) {
@@ -197,10 +257,12 @@ function deleteProduct(temp) {
   if (productIndex >= 0) {
     products.splice(productIndex, 1);
     saveProduct();
-   showProducts();
+    showProducts();
   }
-  
+
 }
+
+
 
 // filter Products by name, price
 filterProducts.addEventListener("click", (e) => {
@@ -216,10 +278,11 @@ filterProducts.addEventListener("click", (e) => {
   });
 
   const sortedProductsByPrice = products.slice().sort((a, b) => {
-    if (a.price < b.price) {
+    console.log(a.price);
+    if (Number(a.price) < Number(b.price)) {
       return -1;
     }
-    if (a.price > b.price) {
+    if (Number(a.price) > Number(b.price)) {
       return 1;
     }
     return 0;
@@ -234,12 +297,15 @@ filterProducts.addEventListener("click", (e) => {
 })
 
 
+
+
+
 // search product by given product ID
 function searchProductByID() {
   let id = filterIDInput.value;
   if (id) {
     let product = products.find((product) => product.ID == id);
-  
+
     if (product) {
       showProducts([product]);
     }
