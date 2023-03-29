@@ -64,7 +64,7 @@ function makeCard(ID, name, image, description, price) {
   card.setAttribute("style", "width: 16rem");
   card.setAttribute("data-id", ID);
 
-  let html = `<div class="card-header d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
+  let html = `<div class="card-header shadow d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
   <img class=\"mx-auto \" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="150px">
   </div>
     <div class=\"card-body\">
@@ -243,7 +243,7 @@ filterProducts.addEventListener("click", (e) => {
 
 
 
-// Filter Products by given ID input
+// Filter Products by given input either name or ID
 
 // Define a debounce function to delay the execution of a function
 function debounce(func, delay) {
@@ -262,16 +262,30 @@ function debounce(func, delay) {
 // Define a function to handle the search
 function handleSearch() {
 
-  // Filter the products array based on the search term
-  const filteredProducts = products.filter(product => {
-    //  check if product ID is starts with given input
-    return String(product.ID).startsWith(filterIDInput.value);
-  });
+  let filteredProducts;
+
+  // if input is number
+  if(!isNaN(filterIDInput.value)){
+
+   
+    filteredProducts = products.filter(product => {
+      return String(product.ID).startsWith(filterIDInput.value);
+    });
+
+  }
+
+  else{
+
+    filteredProducts=products.filter((product)=>{
+      return product.name.startsWith(filterIDInput.value);
+    })
+
+  }
 
   // Display the filtered products in the UI
   showProducts(filteredProducts);
 }
 
 
-// Use the debounce function to delay the execution of the search function for product ID
+// Use the debounce function to delay the execution of the search function 
 filterIDInput.addEventListener('input', debounce(handleSearch, 500));
