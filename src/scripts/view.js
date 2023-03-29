@@ -101,7 +101,7 @@ function showProduct() {
                 <h4 class="card-title" id="card-name">${card.name}</h4>
                 <p class="card-text" id="card-description">${card.description}</p>
                 <p class="card-text" id="card-price">&#8377;${card.price}</p>
-                <button type="button" onClick="editProduct()" id="edit-btn" class="btn btn-primary text-nowrap" data-toggle="modal" data-target="#editProduct">
+                <button type="button" onClick="editProduct()" id="edit-btn" class="btn bg-dark-blue btn-sm text-light text-nowrap" data-toggle="modal" data-target="#editProduct">
                     Edit Product
                 </button>
             </div>

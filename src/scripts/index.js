@@ -75,8 +75,8 @@ function makeCard(ID, name, image, description, price) {
       <span>&#8377;</span><span class=\"card-text\" id="card-price">  ${price}</span>
       </p>
       <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
-      <button class="btn btn-primary btn-sm">
-        <a href="./src/pages/view.html?productID=${ID}" class="text-light text-decoration-none">VIEW</a>
+      <button class="btn btn-sm bg-dark-blue">
+        <a href="./src/pages/view.html?productID=${ID}" class="text-light  text-decoration-none">VIEW</a>
       </button>
     </div>`
 

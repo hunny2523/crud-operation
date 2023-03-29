@@ -2,12 +2,21 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Calibri', 'Trebuchet MS', sans-serif
 }
 
 
-/* set breadcrumbs color to white */
-.breadcrumb-item+.breadcrumb-item::before {
-   
-    color: white;
-   
+
+
+body{
+    background-color: #A9C6D9;
+    color: #525759;
+}
+
+.grey-text{
+    color: #525759;
+}
+
+.bg-dark-blue{
+    background-color: #2573a4;
 }
