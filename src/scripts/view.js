@@ -28,52 +28,27 @@ let card = products.filter(product => product.ID == id)[0];
 // form edit Button
 const editBtn = document.getElementById("editProductButton");
 
-// validate form
-function validateForm() {
-
-    // productImageInput.addEventListener('change', function(event) {
-    //     const file = event.target.files[0];
-    //     const fileSize = file.size / 1000; // convert to KB
-      
-    //     if (fileSize > 200) {
-    //     productImageInput.setCustomValidity('Image size must be less than 200 KB');
-    //     } 
-    //     else {
-    //     productImageInput.setCustomValidity('');
-    //     }
-    //     });
+// modal form
+const form=document.getElementById("editProductForm")
 
 
+   
 
-
-
-
-
-    let validateValue = true;
-    let alertMsg = "";
-
-    if (!formName.value) {
-        alertMsg += "Name is Required \n";
-        validateValue = false;
+// image input validation 
+formImage.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    const fileSize = file.size / 1000; // convert to KB
+  
+    if (fileSize > 200) {
+      formImage.setCustomValidity('Image size must be less than 200 KB');
     }
-    else if (!formImage.files[0] || formImage.files[0].size>200000) {
-        alertMsg += "Please Upload valid image with size less than 200 KB\n";
-        validateValue = false;
+    else {
+      formImage.setCustomValidity('');
     }
-    else if (formPrice.value < 0 || !formPrice.value) {
-        alertMsg += "Price must not be Zero or less than Zero\n";
-        validateValue = false;
-    }
-    else if (!formDescription.value) {
-        alertMsg += "Description is required\n";
-        validateValue = false;
-    }
+    formImage.reportValidity()
+  });
+  
 
-    if (!validateValue) alert(alertMsg);
-
-    return validateValue;
-
-}
 
 
 // if edit button is clicked then set product info to form
@@ -86,13 +61,12 @@ function editProduct() {
 }
 
 
+
+
 // when product edit button is clicked the products array will be chnaged and the screen too
-editBtn.addEventListener("click", async (e) => {
+form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
-
-    if (validateForm()) {
-
         let index = products.findIndex(product => product.ID == id);
 
         // change product values
@@ -106,10 +80,12 @@ editBtn.addEventListener("click", async (e) => {
         showProduct();
 
         closeModal();
-    }
-
-
+   
 })
+
+
+
+
 
 
 // show card at main-container
@@ -157,6 +133,9 @@ async function getBlob(file) {
         alert("Image not valid")
     }
 }
+
+
+
 
 // close modal after making changes
 function closeModal() {

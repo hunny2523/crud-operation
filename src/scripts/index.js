@@ -34,85 +34,24 @@ const filterIDInput = document.getElementById("filterByID");
 
 
 
-// Reset custom validity on input
-productNameInput.addEventListener('input', function (event) {
-  productNameInput.setCustomValidity('');
-});
-
-productDescriptionInput.addEventListener('input', function (event) {
-  productDescriptionInput.setCustomValidity('');
-});
-
-productImageInput.addEventListener('input', function (event) {
-  productImageInput.setCustomValidity('');
-});
-
-productPriceInput.addEventListener('input', function (event) {
-  productPriceInput.setCustomValidity('');
-});
 
 
 
+// image input validation 
+productImageInput.addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  const fileSize = file.size / 1000; // convert to KB
 
-// form validations
-function validateForm() {
-
-  productImageInput.addEventListener('change', function (event) {
-    const file = event.target.files[0];
-    const fileSize = file.size / 1000; // convert to KB
-
-    if (fileSize > 200) {
-      productImageInput.setCustomValidity('Image size must be less than 200 KB');
-    }
-    else {
-      productImageInput.setCustomValidity('');
-    }
-  });
-
-
-
-  if (form.checkValidity() === false) {
-
-    // If form is invalid, display error messages for each invalid field
-    const fields = form.querySelectorAll(':invalid');
-
-    fields.forEach(function (field) {
-      // Use setCustomValidity to display custom error messages
-      if (field.id === 'productName') {
-        console.log(field.values);
-        field.setCustomValidity('Please enter a product name');
-      }
-      else if (field.id === 'productDescription') {
-        field.setCustomValidity('Please enter a product description');
-      }
-      else if (field.id === 'productImage') {
-        if (field.files[0] && field.files[0].size > 200000) {
-          productImageInput.setCustomValidity('Image size must be less than 200 KB');
-        }
-        else {
-          field.setCustomValidity('Please Upload Product Image');
-        }
-      }
-      else if (field.id === 'productPrice') {
-        if (isNaN(field.value)) {
-          field.setCustomValidity('Price must be a number');
-        }
-        else {
-          field.setCustomValidity('');
-        }
-      }
-
-    });
-
-    return false;
-
-  } else {
-    // If form is valid, submit the form
-    return true;
+  if (fileSize > 200) {
+    productImageInput.setCustomValidity('Image size must be less than 200 KB');
   }
+  else {
+    productImageInput.setCustomValidity('');
+  }
+  productImageInput.reportValidity()
+});
 
 
-}
 
 
 
@@ -160,13 +99,11 @@ function closeModal() {
 
 }
 
+
+
 // when product is created by form , add product
-CreateProductbtn.addEventListener("click", async function (event) {
+form.addEventListener("submit", async function (event) {
   event.preventDefault();
-
-  if (validateForm()) {
-
-
     const name = productNameInput.value;
     const description = productDescriptionInput.value;
     const price = productPriceInput.value;
@@ -177,9 +114,9 @@ CreateProductbtn.addEventListener("click", async function (event) {
     addCard(name, image, description, price);
     closeModal();
 
-  }
-
 });
+
+
 
 // convert image to base64 bit
 async function getBlob(file) {
@@ -192,6 +129,7 @@ async function getBlob(file) {
     reader.readAsDataURL(file);
   });
 }
+
 
 
 // generate new card
@@ -214,10 +152,12 @@ function addCard(...args) {
 }
 
 
+
 // save products to localstorage
 function saveProduct() {
   localStorage.setItem("products", JSON.stringify(products));
 }
+
 
 
 
@@ -236,6 +176,8 @@ function showProducts(elements = products) {
     productCards.innerHTML = innerDiv.innerHTML;
   }
 }
+
+
 
 // show products when page loaded
 showProducts();
@@ -264,6 +206,7 @@ function deleteProduct(temp) {
 
 
 
+
 // filter Products by name, price
 filterProducts.addEventListener("click", (e) => {
 
@@ -278,7 +221,7 @@ filterProducts.addEventListener("click", (e) => {
   });
 
   const sortedProductsByPrice = products.slice().sort((a, b) => {
-    console.log(a.price);
+
     if (Number(a.price) < Number(b.price)) {
       return -1;
     }
@@ -305,27 +248,30 @@ filterProducts.addEventListener("click", (e) => {
 // Define a debounce function to delay the execution of a function
 function debounce(func, delay) {
   let timeout;
-  return function() {
-    
+  return function () {
+
     clearTimeout(timeout);
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       func();
     }, delay);
   };
 }
 
+
+
 // Define a function to handle the search
 function handleSearch() {
-  
+
   // Filter the products array based on the search term
   const filteredProducts = products.filter(product => {
-  //  check if product ID is starts with given input
+    //  check if product ID is starts with given input
     return String(product.ID).startsWith(filterIDInput.value);
   });
 
   // Display the filtered products in the UI
   showProducts(filteredProducts);
 }
+
 
 // Use the debounce function to delay the execution of the search function for product ID
 filterIDInput.addEventListener('input', debounce(handleSearch, 500));
