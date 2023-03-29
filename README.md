@@ -28,6 +28,8 @@ The main page displays a list of products. Click on the "Add Product" button to 
 └── src
     ├── css
     │   └── style.css
+    ├── favicon
+    │   └── favicon.jpeg
     ├── pages
     │   └── view.html
     └── scripts
