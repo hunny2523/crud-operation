@@ -5,21 +5,3 @@
     font-family: 'Calibri', 'Trebuchet MS', sans-serif
 }
 
-
-
-
-body{
-    background-color: #A9C6D9;
-    color: #525759;
-}
-
-.grey-text{
-    color: #525759;
-}
-
-.bg-dark-blue{
-    background-color: #2573a4;
-}
-.bg-dark-blue:hover{
-    background-color: #6295b6;
-}

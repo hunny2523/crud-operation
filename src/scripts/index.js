@@ -55,30 +55,30 @@ productImageInput.addEventListener('change', function (event) {
 
 
 
-// Take information and return product card 
+// Take information and return product card
 function makeCard(ID, name, image, description, price) {
 
   let card = document.createElement("div");
 
-  card.classList = "card m-3 p-0 ";
+  card.classList = "shadow-sm card border-0 m-3 p-0 ";
   card.setAttribute("style", "width: 16rem");
   card.setAttribute("data-id", ID);
 
-  let html = `<div class="card-header shadow d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
-  <img class=\"mx-auto \" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="150px">
+  let html = `<div class=" d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
+  <img class=\"mx-auto object-fit-contain\" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="100%">
   </div>
-    <div class=\"card-body\">
-      <p class=\"card-title\" id="card-ID">ID: ${ID}</p>
-      <h5 class=\"card-title\" id="card-name">${name}</h5>
-      <p class=\"card-text text-truncate\" id="card-description">${description}</p>
-      <p>
-      <span>&#8377;</span><span class=\"card-text\" id="card-price">  ${price}</span>
-      </p>
-      <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
-      <button class="btn btn-sm bg-dark-blue">
-        <a href="./src/pages/view.html?productID=${ID}" class="text-light  text-decoration-none">VIEW</a>
-      </button>
-    </div>`
+  <div class=\"card-body\">
+  <p class=\"card-title\" id="card-ID">ID: ${ID}</p>
+  <h5 class=\"card-title\" id="card-name">${name}</h5>
+  <p class=\"card-text text-truncate\" id="card-description">${description}</p>
+  <p>
+  <span>&#8377;</span><span class=\"card-text\" id="card-price"> ${price}</span>
+  </p>
+  <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
+  <button class="btn btn-sm bg-secondary">
+  <a href="./src/pages/view.html?productID=${ID}" class="text-light text-decoration-none">VIEW</a>
+  </button>
+  </div>`
 
   card.innerHTML = html;
   return card;
@@ -104,15 +104,15 @@ function closeModal() {
 // when product is created by form , add product
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
-    const name = productNameInput.value;
-    const description = productDescriptionInput.value;
-    const price = productPriceInput.value;
-    let image = productImageInput.files[0];
+  const name = productNameInput.value;
+  const description = productDescriptionInput.value;
+  const price = productPriceInput.value;
+  let image = productImageInput.files[0];
 
-    image = await getBlob(image);
+  image = await getBlob(image);
 
-    addCard(name, image, description, price);
-    closeModal();
+  addCard(name, image, description, price);
+  closeModal();
 
 });
 
@@ -265,18 +265,18 @@ function handleSearch() {
   let filteredProducts;
 
   // if input is number
-  if(!isNaN(filterIDInput.value)){
+  if (!isNaN(filterIDInput.value)) {
 
-   
+
     filteredProducts = products.filter(product => {
       return String(product.ID).startsWith(filterIDInput.value);
     });
 
   }
 
-  else{
+  else {
 
-    filteredProducts=products.filter((product)=>{
+    filteredProducts = products.filter((product) => {
       return product.name.startsWith(filterIDInput.value);
     })
 

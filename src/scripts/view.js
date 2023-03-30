@@ -92,16 +92,16 @@ form.addEventListener("submit", async (e) => {
 function showProduct() {
 
 
-    let html = `<div class="card d-flex flex-lg-row flex-column container m-auto mt-5 " >
-            <div class="card-header col-lg-3 col-12 align-self-center">
+    let html = `<div class="card border-0 shadow-sm d-flex flex-md-row flex-column container m-auto mt-5 " style="max-width:60rem" >
+            <div class="col-md-3 col-12 align-self-center">
                     <img src=${card.image} alt="camera" id="card-Image" class="card-img" style="max-height:400px;max-width:400px" >
             </div>
-            <div class="card-body">
+            <div class="card-body ms-lg-4">
                 <p class="card-title">ID: ${card.ID}</p>
-                <h4 class="card-title" id="card-name">${card.name}</h4>
+                <h3 class="card-title fw-bold" id="card-name">${card.name}</h3>
                 <p class="card-text" id="card-description">${card.description}</p>
-                <p class="card-text" id="card-price">&#8377;${card.price}</p>
-                <button type="button" onClick="editProduct()" id="edit-btn" class="btn bg-dark-blue btn-sm text-light text-nowrap" data-toggle="modal" data-target="#editProduct">
+                <h5 class="card-text" id="card-price">&#8377;${card.price}</h5>
+                <button type="button" onClick="editProduct()" id="edit-btn" class="btn  btn-sm btn-danger text-nowrap" data-toggle="modal" data-target="#editProduct">
                     Edit Product
                 </button>
             </div>
