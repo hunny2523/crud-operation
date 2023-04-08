@@ -31,6 +31,11 @@ const filterProducts = document.getElementById("filterProducts");
 // ID input for filter products
 const filterIDInput = document.getElementById("filterByID");
 
+// confirmation button on delete product
+const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+// confirm delete modal
+const confirmDeleteModal = new bootstrap.Modal(document.getElementById("confirm-delete-modal"));
 
 
 
@@ -67,18 +72,18 @@ function makeCard(ID, name, image, description, price) {
   let html = `<div class=" d-flex justify-content-center mx-auto rounded " style="height:10rem;width:100% " >
   <img class=\"mx-auto object-fit-contain\" id="card-img" src=\"${image}" alt=\"Card image\" height="100%" width="100%">
   </div>
-  <div class=\"card-body\">
-  <p class=\"card-title\" id="card-ID">ID: ${ID}</p>
-  <h5 class=\"card-title\" id="card-name">${name}</h5>
-  <p class=\"card-text text-truncate\" id="card-description">${description}</p>
-  <p>
-  <span>&#8377;</span><span class=\"card-text\" id="card-price"> ${price}</span>
-  </p>
-  <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
-  <button class="btn btn-sm bg-secondary">
-  <a href="./src/pages/view.html?productID=${ID}" class="text-light text-decoration-none">VIEW</a>
-  </button>
-  </div>`
+    <div class=\"card-body\">
+      <p class=\"card-title\" id="card-ID">ID: ${ID}</p>
+      <h5 class=\"card-title\" id="card-name">${name}</h5>
+      <p class=\"card-text text-truncate\" id="card-description">${description}</p>
+      <p>
+      <span>&#8377;</span><span class=\"card-text\" id="card-price">  ${price}</span>
+      </p>
+      <button onClick=\"deleteProduct(this)\" class=\" btn btn-danger btn-sm \" data-id=\"${ID}\">Delete</button>
+      <button class="btn btn-sm bg-secondary">
+        <a href="./src/pages/view.html?productID=${ID}" class="text-light  text-decoration-none">VIEW</a>
+      </button>
+    </div>`
 
   card.innerHTML = html;
   return card;
@@ -108,10 +113,10 @@ form.addEventListener("submit", async function (event) {
   const description = productDescriptionInput.value;
   const price = productPriceInput.value;
   let image = productImageInput.files[0];
-
+  let imageName = image.name;
   image = await getBlob(image);
 
-  addCard(name, image, description, price);
+  addCard(name, image, imageName, description, price);
   closeModal();
 
 });
@@ -139,12 +144,12 @@ function addCard(...args) {
     ID: generateProductID(),
     name: args[0],
     image: args[1],
-    description: args[2],
-    price: args[3]
+    imageName: args[2],
+    description: args[3],
+    price: args[4]
   }
 
   products.push(newCard);
-
   saveProduct();
   showProducts();
   form.reset();
@@ -157,8 +162,6 @@ function addCard(...args) {
 function saveProduct() {
   localStorage.setItem("products", JSON.stringify(products));
 }
-
-
 
 
 // show products on screen from products array
@@ -191,16 +194,24 @@ function generateProductID() {
 
 
 
+
 // delete product
 function deleteProduct(temp) {
 
   let id = temp.dataset.id;
-  const productIndex = products.findIndex(product => product.ID == id);
-  if (productIndex >= 0) {
-    products.splice(productIndex, 1);
-    saveProduct();
-    showProducts();
-  }
+
+  confirmDeleteModal.show();
+
+  confirmDeleteBtn.addEventListener("click", () => {
+    const productIndex = products.findIndex(product => product.ID == id);
+    if (productIndex >= 0) {
+      products.splice(productIndex, 1);
+      saveProduct();
+      showProducts();
+    }
+    confirmDeleteModal.hide();
+
+  });
 
 }
 
@@ -289,3 +300,4 @@ function handleSearch() {
 
 // Use the debounce function to delay the execution of the search function 
 filterIDInput.addEventListener('input', debounce(handleSearch, 500));
+

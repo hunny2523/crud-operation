@@ -29,25 +29,8 @@ let card = products.filter(product => product.ID == id)[0];
 const editBtn = document.getElementById("editProductButton");
 
 // modal form
-const form=document.getElementById("editProductForm")
+const form = document.getElementById("editProductForm")
 
-
-   
-
-// image input validation 
-formImage.addEventListener('change', function (event) {
-    const file = event.target.files[0];
-    const fileSize = file.size / 1000; // convert to KB
-  
-    if (fileSize > 200) {
-      formImage.setCustomValidity('Image size must be less than 200 KB');
-    }
-    else {
-      formImage.setCustomValidity('');
-    }
-    formImage.reportValidity()
-  });
-  
 
 
 
@@ -67,20 +50,18 @@ function editProduct() {
 form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
-        let index = products.findIndex(product => product.ID == id);
+    let index = products.findIndex(product => product.ID == id);
 
-        // change product values
-        products[index].name = formName.value;
-        products[index].description = formDescription.value;
-        products[index].price = formPrice.value;
-        products[index].image = await getBlob(formImage.files[0]) || card.image;
+    // change product values
+    products[index].name = formName.value;
+    products[index].description = formDescription.value;
+    products[index].price = formPrice.value;
+    products[index].image = formImage.files[0] ? await getBlob(formImage.files[0]) : card.image;
 
-        localStorage.setItem("products", JSON.stringify(products));
+    localStorage.setItem("products", JSON.stringify(products));
+    showProduct();
+    closeModal();
 
-        showProduct();
-
-        closeModal();
-   
 })
 
 
